@@ -79,3 +79,14 @@ def checkliststates():
 def returncheckliststates():
     data = [i.todict() for i in CheckListStates.query.all()]
     return data
+@app.route("/deletechecklistdatastate", methods=["POST"])
+def deletechecklistdatastate():
+    data = request.get_json()
+    summarydelete = CheckListData.query.filter_by(summary=data['summary']).first()
+    statedelete = CheckListStates.query.filter_by(statelocation=data['id']).first()
+    if summarydelete:
+        db.session.delete(summarydelete)
+    if statedelete:
+        db.session.delete(statedelete)
+    db.session.commit()
+    return "works"
